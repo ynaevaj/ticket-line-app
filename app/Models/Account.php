@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Account extends Authenticatable
 {
@@ -23,4 +23,8 @@ class Account extends Authenticatable
     ];
 
     public $timestamps = false;
+
+    public function user(): HasOne{
+        return $this->hasOne(User::class);
+    }
 }

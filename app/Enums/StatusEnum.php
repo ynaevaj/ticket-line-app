@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum StatusEnums: string{
+enum StatusEnum: string{
   case Active = 'active';
   case Inactive = 'inactive';
 }

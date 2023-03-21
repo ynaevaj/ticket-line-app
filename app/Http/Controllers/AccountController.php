@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Account;
+use Auth;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -64,23 +65,33 @@ class AccountController extends Controller
         }
 
         $data = $request->all();
-        $user = Account::where('username', '=', $data['username'])->first();
+        $account = Account::where('username', '=', $data['username'])->first();
 
-        if($user){
-            if(Hash::check($data['password'], $user['password'])){
-                $token = $user->createToken('API Token')->accessToken;
+        if($account){
+            $user = User::where('account_id', '=', $account->id)->first();
+            if(Hash::check($data['password'], $account['password'])){
+                $token = $account->createToken('API Token')->accessToken;
                 $result = [
-                    'user' => $user,
+                    'user' => $user, 
                     'token' => $token,
                     'message' => 'Login Successful'
                 ]; 
                 return response()->json($result);
             }else{
-                return response()->json(['message' => 'Email and password do not match']);
+                return response()->json(['message' => 'username and password do not match']);
             }
         }else{
-            return response()->json(['message' => 'Can not find email']);
+            return response()->json(['message' => 'Can not find username']);
         }
 
+    }
+
+    public function logout(){
+        if(Auth::check()){
+            Auth::user()->token()->revoke();
+            return response()->json(['message' => 'User logged out successfully'], 200);
+        }else{
+            return response()->json(['message' => 'Something went wrong. Please try again.'], 500);
+        }
     }
 }

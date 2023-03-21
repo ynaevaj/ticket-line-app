@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('box_offices', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('box_office_name');
-            $table->string('box_office_status')->default('active');
+            $table->foreignId('user_id');
+            $table->foreignId('event_id');
+            $table->integer('ticket_type_id');
+            $table->boolean('is_valid');
+            $table->boolean('is_scanned');
+            $table->integer('scanned_times');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('box_offices');
+        Schema::dropIfExists('tickets');
     }
 };

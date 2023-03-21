@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
@@ -14,4 +15,12 @@ class Event extends Model
         'event_date',
         'box_office_id',
     ];
+
+    public function session(): HasMany{
+        return $this->hasMany(Sessions::class);
+    }
+
+    public function venue(): HasMany{
+        return $this->hasMany(Venues::class);
+    }
 }

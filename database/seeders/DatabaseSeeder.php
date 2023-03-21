@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Event;
+use App\Models\BoxOffice;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +21,13 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $this->call([
+            EventSeeder::class,
+            BoxOfficeSeeder::class,
+            VenueSeeder::class,
+            SessionSeeder::class,
+        ]);
+
     }
 }

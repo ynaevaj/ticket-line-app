@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\StatusEnums;
 
 class BoxOffice extends Model
 {
@@ -12,10 +12,15 @@ class BoxOffice extends Model
 
     protected $fillable = [
         'box_office_name',
-        'box_office_status'
+        'box_office_status',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     protected $casts = [
-        'status' => StatusEnums::class,
+        'box_office_status' => StatusEnum::class,
     ];
 }
