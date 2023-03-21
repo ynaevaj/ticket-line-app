@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Venue;
 use Illuminate\Http\Request;
+use App\Http\Resources\VenueResource;
 
 class VenueController extends Controller
 {
@@ -12,7 +13,11 @@ class VenueController extends Controller
      */
     public function index()
     {
-        //
+        $venues = Venue::all();
+        return response([
+            'venues' =>  VenueResource::collection($venues),
+            'message' => 'Successful'
+        ]);
     }
 
     /**
@@ -28,7 +33,10 @@ class VenueController extends Controller
      */
     public function show(Venue $venue)
     {
-        //
+        return response([
+            'venue' => new VenueResource($venue),
+            'message' => 'Sucessful'
+        ],200);
     }
 
     /**
@@ -45,5 +53,18 @@ class VenueController extends Controller
     public function destroy(Venue $venue)
     {
         //
+    }
+
+    public function search_venue(Request $request){
+        $params = $request->all();
+        $query = $params['venue_name'];
+
+
+        $venue = Venue::where("venue_name", "LIKE", "%".$query."%", "OR", "%".strtoupper($query)."%")->get();
+
+        return response([
+            'venue' => new VenueResource($venue),
+            'message' => 'Successful'
+        ],200);
     }
 }

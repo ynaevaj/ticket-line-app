@@ -5,22 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SessionController;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+use App\Http\Controllers\VenueController;
 
 
+//This handles all account concerns
 Route::prefix('auth')->group(function () {
   Route::post('/register', [AccountController::class, 'register']);
   Route::post('/login', [AccountController::class, 'login']);
@@ -28,9 +16,19 @@ Route::prefix('auth')->group(function () {
 });
 
 
+//this handles all the work XD
 Route::middleware(['auth:api'])->group(function () {
   Route::apiResources([
     'events' => EventController::class,
     'sessions' => SessionController::class,
+    'venues' => VenueController::class,
   ]);
+
+  Route::prefix('venue')->group(function () {
+    Route::get('/search', [VenueController::class, 'search_venue']);
+  });
+
+  Route::prefix('event')->group(function () {
+      Route::get('/search', [EventController::class, 'search_event']);
+  });
 });

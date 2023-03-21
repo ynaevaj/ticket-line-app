@@ -56,4 +56,16 @@ class EventController extends Controller
     {
         //
     }
+
+    public function search_event(Request $request){
+        $params = $request->all();
+        $query = $params['event_name'];
+
+        $event = Event::where("event_name", "LIKE", "%".$query."%", "OR", "%".strtoupper($query)."%")->get();
+
+        return response([
+            'event' => new EventResource($event),
+            'message' => 'Successful',
+        ],200);
+    }
 }
