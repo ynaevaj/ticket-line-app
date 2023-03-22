@@ -68,4 +68,5 @@ class EventController extends Controller
             'message' => 'Successful',
         ],200);
     }
+    
 }
