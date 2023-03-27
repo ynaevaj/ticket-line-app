@@ -6,7 +6,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\VenueController;
-
+use App\Http\Controllers\GroupController;
 
 //This handles all account concerns
 Route::prefix('auth')->group(function () {
@@ -22,6 +22,7 @@ Route::middleware(['auth:api'])->group(function () {
     'events' => EventController::class,
     'sessions' => SessionController::class,
     'venues' => VenueController::class,
+    'groups' => GroupController::class,
   ]);
 
   Route::prefix('venue')->group(function () {

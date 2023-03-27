@@ -20,7 +20,7 @@ class Event extends Model
         return $this->hasMany(Sessions::class);
     }
 
-    public function venue(): HasMany{
-        return $this->hasMany(Venues::class);
+    public function venue(){
+        return $this->hasMany(Venue::class);
     }
 }

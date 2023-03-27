@@ -17,7 +17,7 @@ class AccountController extends Controller
     public function register(Request $request){
         
         $validator = Validator::make($request->all(),[
-            'username' => 'required',
+            'username' => 'required|unique:account',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ]);

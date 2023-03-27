@@ -18,6 +18,7 @@ class Ticket extends Model
         'is_valid',
         'is_scanned',
         'scanned_times',
+        'is_valid',
         
     ];
 

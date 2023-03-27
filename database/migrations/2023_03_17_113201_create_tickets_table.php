@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('event_id');
             $table->integer('ticket_type_id');
-            $table->boolean('is_valid');
-            $table->boolean('is_scanned');
-            $table->integer('scanned_times');
+            $table->boolean('is_valid')->default(true);
+            $table->boolean('is_scanned')->default(false);
+            $table->integer('scanned_times')->nullable();
             $table->timestamps();
         });
     }

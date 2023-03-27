@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Session;
+use App\Models\Venue;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\EventResource;
 
 class EventController extends Controller
@@ -58,15 +62,26 @@ class EventController extends Controller
     }
 
     public function search_event(Request $request){
-        $params = $request->all();
-        $query = $params['event_name'];
+         $params = $request->all();
 
-        $event = Event::where("event_name", "LIKE", "%".$query."%", "OR", "%".strtoupper($query)."%")->get();
+         if($request->filled('venue_id')){
+            $venues = Session::where('venue_id', '=', $params['venue_id'])->get();
+
+            $event = $venues;
+
+         }else{
+            $sessions = Session::where('id', '=', $params['session_id'])->with('event')->get();
+
+            $event = $sessions;
+
+         }
+        
 
         return response([
-            'event' => new EventResource($event),
+            'session' => new EventResource($event),
             'message' => 'Successful',
         ],200);
     }
+
     
 }
