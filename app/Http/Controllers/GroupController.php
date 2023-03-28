@@ -44,12 +44,10 @@ class GroupController extends Controller
             'ticket_type_id' => $data['ticket_type_id'],
         ]);
 
-        $result = [
-            'group' => $group,
-            'message' => 'Group Successfully created'
-        ];
-
-        return response()->json($result);
+        return response([
+            'group' => new GroupResource($group),
+            'message' => 'Group successfully created'
+        ],200);
     }
 
     /**
@@ -68,7 +66,11 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
-        //
+        $data = $request->all();
+        $group->update($data);
+
+        return new GroupResource($group);
+
     }
 
     /**
@@ -76,6 +78,11 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        //
+       $group->delete();
+
+       return response([
+            'group' => null,
+            'message' => "Group has been deleted."
+       ],200);
     }
 }

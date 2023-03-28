@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_scanned')->default(false);
             $table->integer('scanned_times')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

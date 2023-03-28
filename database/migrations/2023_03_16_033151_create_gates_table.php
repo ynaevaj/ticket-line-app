@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('gate_name');
             $table->integer('venue_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

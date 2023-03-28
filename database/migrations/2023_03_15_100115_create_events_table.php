@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->uuid('event_uuid');
             $table->string('event_name');
             $table->dateTime('event_date');
-            $table->integer('box_office_id');
-            $table->string('notes');
+            $table->integer('box_office_id')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -60,7 +60,7 @@ class VenueController extends Controller
         $query = $params['venue_name'];
 
 
-        $venue = Venue::where("venue_name", "LIKE", "%".$query."%", "OR", "%".strtoupper($query)."%")->get();
+        $venue = Venue::where("venue_name", "LIKE", "%".$query."%", "OR", "%".strtoupper($query)."%")->orderBy('venue_name','asc')->get();
 
         return response([
             'venue' => new VenueResource($venue),

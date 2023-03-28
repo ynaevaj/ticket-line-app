@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('box_office_name');
             $table->string('box_office_status')->default('active');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

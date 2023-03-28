@@ -9,6 +9,8 @@ use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\EventResource;
+use Illuminate\Support\Str;
+
 
 class EventController extends Controller
 {
@@ -18,11 +20,10 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
-        return response(
-            [
-                'events' => EventResource::collection($events),
-                'message' => 'Successful'
-            ],200);
+        return response([
+            'events' => EventResource::collection($events),
+            'message' => 'Successful'
+        ],200);
     }
 
     /**
@@ -31,6 +32,31 @@ class EventController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'event_name' => 'required',
+            'event_date' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'message' => "Event cannot be created",
+                'errors' => $validator->errors()
+            ]);
+        };
+        
+        $data = $request->all();
+        $event = Event::create([
+            'event_uuid' => Str::uuid(),
+            'event_name' => $data['event_name'],
+            'event_date' => $data['event_date'],
+            'box_office_id' => $data['box_office_id'],
+            'notes' => $data['notes']
+        ]);
+
+        return response([
+            'event' => new EventResource($event),
+            'message' => 'Event successfully created'
+        ]);
     }
 
     /**
@@ -62,26 +88,31 @@ class EventController extends Controller
     }
 
     public function search_event(Request $request){
-         $params = $request->all();
+        $params = $request->all();
 
-         if($request->filled('venue_id')){
-            $venues = Session::where('venue_id', '=', $params['venue_id'])->get();
+        if($request->filled('venue_id')){
+            $venue_id = array_map('intval', explode(',', $params['venue_id']));
 
-            $event = $venues;
+            $venues = Session::whereIn('venue_id', $venue_id)->with('event')->get();
 
-         }else{
-            $sessions = Session::where('id', '=', $params['session_id'])->with('event')->get();
+            $event = $venues->map->only(['event']);
 
-            $event = $sessions;
+            $res = $event->pluck('event')->unique();
+        }elseif($request->filled('session_id')){
+            $session_id = array_map('intval', explode(',', $params['session_id']));
 
-         }
-        
+            $sessions = Session::whereIn('id', $session_id)->with('event')->get();
+
+            $event = $sessions->map->only(['event']);
+
+            $res = $event->pluck('event')->unique();   
+        }
 
         return response([
-            'session' => new EventResource($event),
+            'event' => new EventResource($res),
             'message' => 'Successful',
         ],200);
+    
     }
-
     
 }

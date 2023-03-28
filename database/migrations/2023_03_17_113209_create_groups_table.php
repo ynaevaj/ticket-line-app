@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('group_name');
             $table->string('ticket_type_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

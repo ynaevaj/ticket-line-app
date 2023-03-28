@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Venue;
 use App\Models\Event;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Session extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        //'session_name',
+        'session_name',
         'event_id',
         'venue_id',
     ];
